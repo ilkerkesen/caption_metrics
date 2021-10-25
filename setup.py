@@ -1,22 +1,22 @@
-from setuptools import setup, find_namespace_packages
+from setuptools import setup
 
-# Prepend pycocoevalcap to package names
-package_names = ['pycocoevalcap.'+p for p in find_namespace_packages()]
 
-with open("README.md", "r") as fh:
+with open('README.md', 'r') as fh:
     readme = fh.read()
 
+
 setup(
-    name='pycocoevalcap',
-    version=1.2,
-    maintainer='salaniz',
-    description="MS-COCO Caption Evaluation for Python 3",
+    name='caption_metrics',
+    version='0.9',
+    maintainer='ilkerkesen',
+    description='Package for Image Captioning Evaluation Metrics',
     long_description=readme,
-    long_description_content_type="text/markdown",
-    url="https://github.com/salaniz/pycocoevalcap",
-    packages=['pycocoevalcap']+package_names,
-    package_dir={'pycocoevalcap': '.'},
+    long_description_content_type='text/markdown',
+    url='https://github.com/ilkerkesen/caption_metrics',
+    license='MIT',
+    packages=['caption_metrics'],
     package_data={'': ['*.jar', '*.gz']},
-    install_requires=['pycocotools>=2.0.2'],
-    python_requires='>=3'
+    install_requires=['pycocotools>=2.0.2', 'numpy'],
+    zip_safe=False,
+    include_package_data=True,
 )
