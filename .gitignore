@@ -134,3 +134,5 @@ stanford-corenlp-3.6.0*
 # tmp / cache
 tmp*
 cache
+
+!caption_metrics/spice/lib
