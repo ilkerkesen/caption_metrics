@@ -18,7 +18,7 @@ class BLEU(object):
         self._hypo_for_image = {}
         self.ref_for_image = {}
 
-    def compute_score(self, gts, res, verbose=1):
+    def compute_score(self, gts, res, verbose=0):
 
         assert(gts.keys() == res.keys())
         imgIds = gts.keys()

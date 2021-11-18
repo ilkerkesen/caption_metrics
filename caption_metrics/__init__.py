@@ -8,8 +8,7 @@ from .spice.spice import Spice
 
 
 class COCOEvaluation(object):
-    def __init__(self, gold, silent=False):
-        self.evalImgs = []
+    def __init__(self, gold, silent=True):
         self.eval = {}
         self.example_scores = {}
         self.gold = gold
@@ -22,9 +21,9 @@ class COCOEvaluation(object):
 
     def setup_scorers(self):
         self.scorers = [
-            (BLEU(4), ["Bleu_1", "Bleu_2", "Bleu_3", "Bleu_4"]),
+            (BLEU(4), ["BLEU-1", "BLEU-2", "BLEU-3", "BLEU-4"]),
             (METEOR(),"METEOR"),
-            (Rouge(), "ROUGE_L"),
+            (Rouge(), "ROUGE-L"),
             (CIDEr(), "CIDEr"),
             (Spice(silent=self.silent), "SPICE")
         ]
@@ -52,15 +51,17 @@ class COCOEvaluation(object):
             score, scores = scorer.compute_score(gts, res)
             if type(method) == list:
                 for sc, scs, m in zip(score, scores, method):
-                    self.setEval(sc, m)
+                    self.set_eval(sc, m)
                     self.set_example_scores(scs, gts.keys(), m)
                     self.print("%s: %0.3f"%(m, sc))
             else:
-                self.setEval(score, method)
+                self.set_eval(score, method)
                 self.set_example_scores(scores, gts.keys(), method)
                 self.print("%s: %0.3f"%(method, score))
+        
+        return self.eval
 
-    def setEval(self, score, method):
+    def set_eval(self, score, method):
         self.eval[method] = score
 
     def set_example_scores(self, scores, example_ids, method):
@@ -80,8 +81,10 @@ class COCOEvaluation(object):
 
 
 class CommonGenEvaluation(COCOEvaluation):
-    def __init__(self, gold, silent=True):
-        raise NotImplementedError('implement this')
-
-    def retrieveExamples(self, results):
-        raise NotImplementedError('implemet this')
+    def retrieve_examples(self, results):
+        keys = results.keys()
+        gts, res = dict(), dict()
+        for k in keys:
+            gts[k] = self.gold[k]
+            res[k] = results[k]
+        return gts, res        
